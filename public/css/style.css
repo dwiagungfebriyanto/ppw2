@@ -1,0 +1,14 @@
+body {
+    background-color: beige;
+    text-align: center;
+    padding: 10px;
+}
+
+header {
+    background-color: aquamarine;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+footer {
+    background-color: cadetblue;
+}
