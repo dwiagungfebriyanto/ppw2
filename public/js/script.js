@@ -1,1 +1,1 @@
-alert("haihai");
+alert('Halo, selamat datang!');
