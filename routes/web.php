@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\BukuController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +21,5 @@ Route::get('/', function () {
 
 Route::get('/beranda', [PostController::class, 'home']);
 Route::get('/tentang', [PostController::class, 'about']);
+
+Route::get('/buku', [BukuController::class, 'index']);
