@@ -3,6 +3,12 @@
 @section('judul', 'Koleksi Buku')
 
 @section('konten')
+    @if(count($data_buku))
+        <div class="alert alert-success">Ditemukan <strong>{{ count($data_buku) }}</strong> data dengan kata: <strong>{{ $cari }}</strong></div>
+    @else 
+        <div class="alert alert-warning"><h4>Data {{ $cari }} tidak ditemukan</h4>
+        <a href="/buku" class="btn btn-warning">Kembali</a></div>
+    @endif
     @if(Session::has('pesan'))
         <div class="alert alert-success">{{Session::get('pesan')}}</div>
     @endif
