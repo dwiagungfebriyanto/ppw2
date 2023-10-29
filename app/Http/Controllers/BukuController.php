@@ -34,13 +34,13 @@ class BukuController extends Controller
             'harga' => $request->harga,
             'tgl_terbit' => $request->tgl_terbit
         ]);
-        return redirect('/buku')->with('pesan', 'Data Buku Berhasil Disimpan');
+        return redirect('/dashboard')->with('pesan', 'Data Buku Berhasil Disimpan');
     }
 
     public function destroy($id) {
         $buku = Buku::find($id);
         $buku->delete();
-        return redirect('/buku')->with('pesanDelete', 'Buku Berhasil Dihapus');
+        return redirect('/dashboard')->with('pesanDelete', 'Buku Berhasil Dihapus');
     }
 
     public function edit($id) {
@@ -50,13 +50,19 @@ class BukuController extends Controller
 
     public function update(Request $request, $id) {
         $buku = Buku::find($id);
+        $this->validate($request, [
+            'judul'         => 'required|string',
+            'penulis'       => 'required|string|max:30',
+            'harga'         => 'required|numeric',
+            'tgl_terbit'    => 'required|date'
+        ]);
         $buku->update([
             'judul' => $request->judul,
             'penulis' => $request->penulis,
             'harga' => $request->harga,
             'tgl_terbit' => $request->tgl_terbit
         ]);
-        return redirect('/buku')->with('pesanUpdate', 'Data Buku Berhasil Diubah');
+        return redirect('/dashboard')->with('pesanUpdate', 'Data Buku Berhasil Diubah');
     }
 
     public function search(Request $request) {
