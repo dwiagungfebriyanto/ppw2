@@ -24,7 +24,11 @@
         </div>
         <table width=100%>
             <tr>
-                <td><a class="btn btn-primary" href={{ route('buku.create') }}><b>TAMBAH BUKU</b></a></td>
+                <td>
+                    @if (Auth::check() && Auth::user()->role == 'admin')
+                        <a class="btn btn-primary" href={{ route('buku.create') }}><b>TAMBAH BUKU</b></a>
+                    @endif
+                </td>
                 <td>
                     <form action="{{ route('buku.search') }}" method="get">
                         @csrf
@@ -42,7 +46,9 @@
                     <th>Penulis</th>
                     <th>Harga</th>
                     <th>Tgl. Terbit</th>
-                    <th class="col-1">Aksi</th>
+                    @if (Auth::check() && Auth::user()->role == 'admin')
+                        <th class="col-1">Aksi</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -53,18 +59,20 @@
                         <td>{{ $buku->penulis }}</td>
                         <td>{{ "Rp. " .number_format($buku->harga, 2, ',', '.') }}</td>
                         <td>{{ \Carbon\Carbon::parse($buku->tgl_terbit)->format('d-m-Y') }}</td>
-                        <td>
-                            <div class="container-fluid align-items-start text-center">
-                                <div class="col-auto">
-                                    <form action="{{ route('buku.destroy', $buku->id) }}" method="post">@csrf 
-                                        <button class="btn btn-danger btn-sm mb-1" onclick="return confirm('Yakin mau dihapus?')" style="width: 70px;">Hapus</button>
-                                    </form>
+                        @if (Auth::check() && Auth::user()->role == 'admin')
+                            <td>
+                                <div class="container-fluid align-items-start text-center">
+                                    <div class="col-auto">
+                                        <form action="{{ route('buku.destroy', $buku->id) }}" method="post">@csrf 
+                                            <button class="btn btn-danger btn-sm mb-1" onclick="return confirm('Yakin mau dihapus?')" style="width: 70px;">Hapus</button>
+                                        </form>
+                                    </div>
+                                    <div class="col-auto">
+                                        <a class="btn btn-outline-primary btn-sm" href="{{ route('buku.edit', $buku->id) }}" style="width: 70px;">Edit</a>
+                                    </div>
                                 </div>
-                                <div class="col-auto">
-                                    <a class="btn btn-outline-primary btn-sm" href="{{ route('buku.edit', $buku->id) }}" style="width: 70px;">Edit</a>
-                                </div>
-                            </div>
-                        </td>
+                            </td>
+                        @endif
                     </tr>
                 @endforeach
             </tbody>
