@@ -39,10 +39,11 @@
             </tr>
         </table>
         <br>
-        <table class="table table-striped table-bordered align-middle">
+        <table class="table table-striped table-bordered">
             <thead class="text-center">
                 <tr>
                     <th>id</th>
+                    <th>Gambar Sampul</th>
                     <th>Judul Buku</th>
                     <th>Penulis</th>
                     <th>Harga</th>
@@ -56,6 +57,13 @@
                 @foreach ($data_buku as $buku)
                     <tr>
                         <td class="text-center">{{ ++$no }}</td>
+                        <td>
+                            @if($buku->filepath)
+                                <div class="relative h-10 w-10">
+                                    <img class="h-full w-full object-cover object-center" src="{{ asset($buku->filepath) }}" alt=""/>
+                                </div>
+                            @endif
+                        </td>
                         <td>{{ $buku->judul }}</td>
                         <td>{{ $buku->penulis }}</td>
                         <td>{{ "Rp. " .number_format($buku->harga, 2, ',', '.') }}</td>

@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BukuController;
+use App\Http\Controllers\GalleryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,10 +34,12 @@ Route::middleware('auth')->group(function () {
         // menambah buku
         Route::get('/buku/create', [BukuController::class, 'create'])->name('buku.create');
         Route::post('/buku', [BukuController::class, 'store'])->name('buku.store');
-        //menghapus buku
+        // menghapus buku
         Route::post('/buku/{id}', [BukuController::class, 'destroy'])->name('buku.destroy');
         // update/edit buku
         Route::get('buku/edit/{id}', [BukuController::class, 'edit'])->name('buku.edit');
+        // menghapus gambar di galeri
+        Route::get('/gallery/delete/{id}', [BukuController::class, 'deleteGallery'])->name('buku.deleteGallery');
         // store update
         Route::post('/buku/update/{id}', [BukuController::class, 'update'])->name('buku.update');
     });
