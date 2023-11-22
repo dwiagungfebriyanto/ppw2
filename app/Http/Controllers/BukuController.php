@@ -50,13 +50,15 @@ class BukuController extends Controller
 
         if ($request->file('gallery')) {
             foreach($request->file('gallery') as $key => $file) {
-                $fileName = time().'_'.$file->getClientOriginalName();
-                $filePath = $file->storeAs('uploads', $fileName, 'public');
+                $galleryFileName = time().'_'.$file->getClientOriginalName();
+                $galleryFilePath = $file->storeAs('uploads', $galleryFileName, 'public');
+
+                Image::make(storage_path().'/app/public/uploads/'.$galleryFileName)->fit(720,720)->save();
 
                 $gallery = Gallery::create([
-                    'nama_galeri' => $fileName,
-                    'path' => '/storage/'. $filePath,
-                    'foto' => $fileName,
+                    'nama_galeri' => $galleryFileName,
+                    'path' => '/storage/'. $galleryFilePath,
+                    'foto' => $galleryFileName,
                     'buku_id' => $buku->id
                 ]);
             }
@@ -91,13 +93,15 @@ class BukuController extends Controller
 
         if ($request->file('gallery')) {
             foreach($request->file('gallery') as $key => $file) {
-                $fileName = time().'_'.$file->getClientOriginalName();
-                $filePath = $file->storeAs('uploads', $fileName, 'public');
+                $galleryFileName = time().'_'.$file->getClientOriginalName();
+                $galleryFilePath = $file->storeAs('uploads', $galleryFileName, 'public');
+
+                Image::make(storage_path().'/app/public/uploads/'.$galleryFileName)->fit(720,720)->save();
 
                 $gallery = Gallery::create([
-                    'nama_galeri' => $fileName,
-                    'path' => '/storage/'. $filePath,
-                    'foto' => $fileName,
+                    'nama_galeri' => $galleryFileName,
+                    'path' => '/storage/'. $galleryFilePath,
+                    'foto' => $galleryFileName,
                     'buku_id' => $id
                 ]);
             }
@@ -143,5 +147,19 @@ class BukuController extends Controller
         $gallery->delete();
 
         return redirect()->back();
+    }
+
+    public function listBuku() {
+        $batas = 5;
+        $data_buku = Buku::orderBy('id', 'desc')->paginate($batas);
+        $no = $batas * ($data_buku->currentPage() - 1);
+        $jumlah_data = Buku::count('id');
+        return view('buku.list_buku', compact('data_buku', 'no', 'jumlah_data'));
+    }
+
+    public function galBuku($title) {
+        $buku = Buku::where('judul', $title)->first();
+        $galeri = $buku->galleries()->orderBy('id', 'desc')->paginate(6);
+        return view('buku.detail-buku', compact('buku', 'galeri'));
     }
 }

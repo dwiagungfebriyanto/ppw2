@@ -14,7 +14,7 @@
             <div class="alert alert-success">{{Session::get('pesanDelete')}}</div>
         @endif
         <div class="py-5 text-center">
-            <h2>Data Buku</h2>
+            <h2><b>DATA BUKU</b></h2>
             <p class="lead">
                 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Expedita, reprehenderit pariatur, 
                 rerum odit doloribus corrupti modi fugit facere sunt corporis fugiat quod nostrum sed 
@@ -22,76 +22,84 @@
                 adipisicing elit.
             </p>
         </div>
-        <table width=100%>
-            <tr>
-                <td>
+
+        <div class="container px-0 mb-3">
+            <div class="row align-items-start">
+                <div class="col">
                     @if (Auth::check() && Auth::user()->role == 'admin')
                         <a class="btn btn-primary" href={{ route('buku.create') }}><b>TAMBAH BUKU</b></a>
                     @endif
-                </td>
-                <td>
+                </div>
+                <div class="col"></div>
+                <div class="col text-end">
                     <form action="{{ route('buku.search') }}" method="get">
                         @csrf
                         <input type="text" name="kata" class="form-control" placeholder="Cari ..." 
-                        style="width: 50%; display: inline; float: right;">
+                        style="display: inline; float: right;">
                     </form>
-                </td>
-            </tr>
-        </table>
-        <br>
-        <table class="table table-striped table-bordered">
-            <thead class="text-center">
-                <tr>
-                    <th>id</th>
-                    <th>Gambar Sampul</th>
-                    <th>Judul Buku</th>
-                    <th>Penulis</th>
-                    <th>Harga</th>
-                    <th>Tgl. Terbit</th>
-                    @if (Auth::check() && Auth::user()->role == 'admin')
-                        <th class="col-1">Aksi</th>
-                    @endif
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($data_buku as $buku)
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-borderless table-hover">
+                <thead>
                     <tr>
-                        <td class="text-center">{{ ++$no }}</td>
-                        <td>
-                            @if($buku->filepath)
-                                <div class="relative h-10 w-10">
-                                    <img class="h-full w-full object-cover object-center" src="{{ asset($buku->filepath) }}" alt=""/>
-                                </div>
-                            @endif
-                        </td>
-                        <td>{{ $buku->judul }}</td>
-                        <td>{{ $buku->penulis }}</td>
-                        <td>{{ "Rp. " .number_format($buku->harga, 2, ',', '.') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($buku->tgl_terbit)->format('d-m-Y') }}</td>
-                        @if (Auth::check() && Auth::user()->role == 'admin')
+                        <th>id</th>
+                        <th>Gambar Sampul</th>
+                        <th>Judul Buku</th>
+                        <th>Penulis</th>
+                        <th>Harga</th>
+                        <th>Tanggal Terbit</th>
+                        <th class="col-1 text-center">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($data_buku as $buku)
+                        <tr>
+                            <td>{{ ++$no }}</td>
                             <td>
-                                <div class="container-fluid align-items-start text-center">
-                                    <div class="col-auto">
-                                        <form action="{{ route('buku.destroy', $buku->id) }}" method="post">@csrf 
-                                            <button class="btn btn-danger btn-sm mb-1" onclick="return confirm('Yakin mau dihapus?')" 
-                                            style="width: 70px;">
-                                                Hapus
-                                            </button>
-                                        </form>
+                                @if($buku->filepath)
+                                    <div class="relative">
+                                        <img class="object-cover object-center rounded-2" src="{{ asset($buku->filepath) }}" alt=""/>
                                     </div>
+                                @endif
+                            </td>
+                            <td>{{ $buku->judul }}</td>
+                            <td>{{ $buku->penulis }}</td>
+                            <td>{{ "Rp. " .number_format($buku->harga, 2, ',', '.') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($buku->tgl_terbit)->format('d-m-Y') }}</td>
+                            <td>
+                                <div class="container-fluid align-items-start">
+                                    @if (Auth::check() && Auth::user()->role == 'admin')
+                                        <div class="col-auto">
+                                            <form action="{{ route('buku.destroy', $buku->id) }}" method="post">@csrf 
+                                                <button class="btn btn-danger btn-sm mb-1" onclick="return confirm('Yakin mau dihapus?')" 
+                                                style="width: 70px;">
+                                                    Hapus
+                                                </button>
+                                            </form>
+                                        </div>
+                                        <div class="col-auto">
+                                            <a class="btn btn-primary btn-sm mb-1" href="{{ route('buku.edit', $buku->id) }}" 
+                                            style="width: 70px;">
+                                                Edit
+                                            </a>
+                                        </div>
+                                    @endif
                                     <div class="col-auto">
-                                        <a class="btn btn-outline-primary btn-sm" href="{{ route('buku.edit', $buku->id) }}" 
+                                        <a class="btn btn-outline-secondary btn-sm" href="{{ route('galeri.buku', $buku->judul) }}" 
                                         style="width: 70px;">
-                                            Edit
+                                            Galeri
                                         </a>
                                     </div>
                                 </div>
                             </td>
-                        @endif
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
         <div class="float-end">{{ $data_buku->links() }}</div>
         <br>
         <br>

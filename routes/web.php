@@ -46,4 +46,9 @@ Route::middleware('auth')->group(function () {
     
 });
 
+// list buku
+Route::get('/buku/list', [BukuController::class, 'listBuku'])->name('buku.list');
+// detail buku
+Route::get('/detail-buku/{title}', [BukuController::class, 'galBuku'])->name('galeri.buku');
+
 require __DIR__.'/auth.php';
