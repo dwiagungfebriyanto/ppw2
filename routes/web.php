@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\FavoriteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,13 @@ Route::middleware('auth')->group(function () {
 
     // searching
     Route::get('buku/search', [BukuController::class, 'search'])->name('buku.search');
+    // detail buku
+    Route::get('/detail-buku/{title}', [BukuController::class, 'galBuku'])->name('galeri.buku');
+    // rate buku
+    Route::post('/buku/rate/{id}', [BukuController::class, 'rate'])->name('buku.rate');
+    // favorites
+    Route::post('/buku/favorites/{id}', [BukuController::class, 'addToFavorites'])->name('buku.favorite');
+    Route::get('/buku/myfavorite', [FavoriteController::class, 'index'])->name('favorites.index');
     
     Route::middleware('admin')->group(function () {
         // menambah buku
@@ -49,6 +57,6 @@ Route::middleware('auth')->group(function () {
 // list buku
 Route::get('/buku/list', [BukuController::class, 'listBuku'])->name('buku.list');
 // detail buku
-Route::get('/detail-buku/{title}', [BukuController::class, 'galBuku'])->name('galeri.buku');
+// Route::get('/detail-buku/{title}', [BukuController::class, 'galBuku'])->name('galeri.buku');
 
 require __DIR__.'/auth.php';

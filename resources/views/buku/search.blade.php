@@ -90,7 +90,7 @@
                                     <div class="col-auto">
                                         <a class="btn btn-outline-secondary btn-sm" href="{{ route('galeri.buku', $buku->judul) }}" 
                                         style="width: 70px;">
-                                            Galeri
+                                            Detail
                                         </a>
                                     </div>
                                 </div>

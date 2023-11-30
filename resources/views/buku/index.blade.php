@@ -7,6 +7,9 @@
         @if(Session::has('pesan'))
             <div class="alert alert-success">{{Session::get('pesan')}}</div>
         @endif
+        @if(Session::has('success'))
+            <div class="alert alert-success">{{Session::get('success')}}</div>
+        @endif
         @if(Session::has('pesanUpdate'))
             <div class="alert alert-success">{{Session::get('pesanUpdate')}}</div>
         @endif
@@ -90,7 +93,7 @@
                                     <div class="col-auto">
                                         <a class="btn btn-outline-secondary btn-sm" href="{{ route('galeri.buku', $buku->judul) }}" 
                                         style="width: 70px;">
-                                            Galeri
+                                            Detail
                                         </a>
                                     </div>
                                 </div>
