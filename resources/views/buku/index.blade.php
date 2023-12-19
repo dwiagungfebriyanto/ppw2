@@ -26,6 +26,15 @@
             </p>
         </div>
 
+        <div class="my-5">
+            <h5>Daftar kategori</h5>
+            @foreach($kategori as $kategoriItem)
+                <a href="{{ route('buku.kategori', $kategoriItem->id) }}" class="btn btn-outline-primary btn-sm mb-1">
+                    {{ $kategoriItem->nama }}
+                </a>
+            @endforeach
+        </div>
+
         <div class="container px-0 mb-3">
             <div class="row align-items-start">
                 <div class="col">

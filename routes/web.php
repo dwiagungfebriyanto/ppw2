@@ -50,6 +50,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/gallery/delete/{id}', [BukuController::class, 'deleteGallery'])->name('buku.deleteGallery');
         // store update
         Route::post('/buku/update/{id}', [BukuController::class, 'update'])->name('buku.update');
+        //kategori
+        Route::resource('kategori', 'KategoriController');
+        Route::get('/buku/kategori/{kategori}', [BukuController::class, 'bukuByKategori'])->name('buku.kategori');
     });
     
 });
@@ -58,5 +61,6 @@ Route::middleware('auth')->group(function () {
 Route::get('/buku/list', [BukuController::class, 'listBuku'])->name('buku.list');
 // detail buku
 // Route::get('/detail-buku/{title}', [BukuController::class, 'galBuku'])->name('galeri.buku');
+Route::get('/buku/populer', [BukuController::class, 'bukuPopuler'])->name('buku.populer');
 
 require __DIR__.'/auth.php';

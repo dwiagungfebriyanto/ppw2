@@ -14,7 +14,7 @@
                     <div class="row">
                         <div class="col-auto">
                             @if($buku->filepath)
-                                <div class="relative h-10 w-10">
+                                <div class="relative ">
                                     <img class="rounded-2" style="width: 110%" src="{{ asset($buku->filepath) }}" alt=""/>
                                 </div>
                             @endif

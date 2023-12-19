@@ -14,6 +14,7 @@
         <section class="w-100 d-flex justify-content-center pb-4">
             <form action="{{route('buku.update',$buku->id)}}" method="POST" enctype="multipart/form-data" style="width: 40rem;">
                 @csrf
+                @method('POST')
                 <!-- Judul buku -->
                 <div class="form-outline mb-4">
                     <label class="form-label" for="form2Example1" style="margin-left: 0px;">Judul buku</label>
@@ -34,6 +35,23 @@
                     <label class="form-label" for="form2Example1" style="margin-left: 0px;">Tanggal terbit</label>
                     <input type="date" class="form-control" name="tgl_terbit" id="tgl_terbit" value="{{$buku->tgl_terbit}}">
                 <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 88.8px;"></div><div class="form-notch-trailing"></div></div></div>
+
+
+                <div class="form-outline mb-4">
+                    <label class="form-label">Kategori Buku</label>
+                    <div>
+                        @foreach($kategori as $kat)
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="kategori[]" value="{{ $kat->id }}" id="kategori{{ $kat->id }}"
+                                       {{ in_array($kat->id, $buku->kategori->pluck('id')->toArray()) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="kategori{{ $kat->id }}">
+                                    {{ $kat->nama }}
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+
                 <!-- Thumbnail -->
                 <div class="form-outline mb-4">
                     <label class="form-label" for="form2Example1" style="margin-left: 0px;">Thumbnail</label>
@@ -55,6 +73,7 @@
                             };
                         </script>
                 <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 88.8px;"></div><div class="form-notch-trailing"></div></div></div>
+
                 
                 <div class="container-fluid">
                     <div class="row align-items-start gap-3">

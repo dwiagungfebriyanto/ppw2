@@ -33,4 +33,19 @@ class Buku extends Model
     {
         return $this->belongsToMany(User::class, 'favorites', 'buku_id', 'user_id');
     }
+
+    public function kategori()
+    {
+        return $this->belongsToMany(Kategori::class, 'buku_kategori');
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function approvedReviews()
+    {
+        return $this->reviews()->where('is_approved', true);
+    }
 }

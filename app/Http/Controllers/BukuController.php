@@ -12,6 +12,10 @@ use App\Models\Rating;
 
 use App\Models\Favorites;
 
+use App\Models\Kategori;
+
+use App\Models\BukuKategori;
+
 use Intervention\Image\Facades\Image;
 
 class BukuController extends Controller
@@ -22,7 +26,8 @@ class BukuController extends Controller
         $no = $batas * ($data_buku->currentPage() - 1);
         $jumlah_data = Buku::count('id');
         $total_harga = Buku::sum('harga');
-        return view('buku.index', compact('data_buku', 'no', 'jumlah_data', 'total_harga'));
+        $kategori = Kategori::all();
+        return view('buku.index', compact('data_buku', 'no', 'jumlah_data', 'total_harga', 'kategori'));
     }
 
     public function create() {
@@ -78,7 +83,8 @@ class BukuController extends Controller
 
     public function edit($id) {
         $buku = Buku::find($id);
-        return view('buku.edit', compact('buku'));
+        $kategori = Kategori::all();
+        return view('buku.edit', compact('buku', 'kategori'));
     }
 
     public function update(Request $request, $id) {
@@ -107,6 +113,19 @@ class BukuController extends Controller
                     'path' => '/storage/'. $galleryFilePath,
                     'foto' => $galleryFileName,
                     'buku_id' => $id
+                ]);
+            }
+        }
+
+        // Hapus kategori yang terkait dengan buku
+        $buku->kategori()->detach();
+
+        // Simpan kategori yang dipilih ke dalam tabel buku_kategori
+        if ($request->has('kategori')) {
+            foreach ($request->input('kategori') as $kategoriId) {
+                BukuKategori::create([
+                    'buku_id' => $buku->id,
+                    'kategori_id' => $kategoriId,
                 ]);
             }
         }
@@ -202,5 +221,17 @@ class BukuController extends Controller
 
         $buku->favoritedBy()->attach(auth()->user()->id);
         return redirect("/buku/myfavorite")->with('success', 'Buku ditambahkan ke favorit.');
+    }
+
+    public function bukuPopuler() {
+        $bukuPopuler = Buku::orderByDesc(\DB::raw('(SELECT AVG(rating) FROM rating WHERE buku_id = buku.id)'))->take(10)->get();
+
+        return view('buku.buku_populer', compact('bukuPopuler'));
+    }
+
+    public function bukuByKategori(Kategori $kategori)
+    {
+        $bukuByKategori = $kategori->buku;
+        return view('buku.buku_by_kategori', compact('bukuByKategori', 'kategori'));
     }
 }
